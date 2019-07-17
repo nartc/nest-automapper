@@ -14,15 +14,18 @@ npm i -s nest-automapper
 ```
 
 **Note**: Installing `nest-automapper` will also install `automapper-nartc` because it is a `dependency` of this wrapper.
+
 **Note 2**: Please make sure that you've read `automapper-nartc` documentations to familiarize yourself with `AutoMapper`'s terminology and how to setup your `Profile` and such.
 
 1. Import `AutomapperModule` in `AppModule`
+
 ```typescript
 @Module({
   imports: [AutomapperModule.forRoot({profiles: [new UserProfile()]})]
 })
 export class AppModule {}
-``` 
+```
+ 
 `AutomapperModule.forRoot()` method expects an `AutomapperModuleOptions`. There are two properties on the options that you can pass in:
 - `profiles`: An array of `MappingProfileBase`.
 - `configFn`: A configuration function that will get called automatically.

@@ -1,6 +1,6 @@
 {
   "name": "@nestjsx/automapper",
-  "version": "0.0.0-development",
+  "version": "1.0.1",
   "description": "NestJSX's AutoMapper module",
   "main": "index.js",
   "repository": {

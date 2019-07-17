@@ -1,11 +1,11 @@
 {
-  "name": "@nestjsx/automapper",
+  "name": "nest-automapper",
   "version": "0.0.0-development",
-  "description": "NestJSX's AutoMapper module",
+  "description": "NestJS's AutoMapper module",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nestjsx/automapper.git"
+    "url": "https://github.com/nartc/nest-automapper.git"
   },
   "engines": {
     "node": ">=6.0.0"

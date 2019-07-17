@@ -13,18 +13,18 @@ export class AutomapperModule {
       throw new Error('AutomapperModuleOptions cannot be emptied');
     }
 
-    if (!!options.profiles && !!options.configFn) {
+    if (options.profiles && options.configFn) {
       Logger.warn(
         'AutomapperModuleOptions ConfigFn will override AutomapperModuleOptions Profiles'
       );
       Mapper.initialize(options.configFn);
-    } else if (!!options.profiles && !options.configFn) {
+    } else if (options.profiles && !options.configFn) {
       Mapper.initialize(config => {
         for (let i = 0; i < options.profiles.length; i++) {
           config.addProfile(options.profiles[i]);
         }
       });
-    } else if (!!options.configFn && !options.profiles) {
+    } else if (options.configFn && !options.profiles) {
       Mapper.initialize(options.configFn);
     }
 

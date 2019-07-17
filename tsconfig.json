@@ -29,6 +29,8 @@
     "node_modules",
     "./**/*.spec.ts",
     "examples",
-    "src/__tests__"
+    "src/__tests__",
+    "test",
+    "tools"
   ]
 }

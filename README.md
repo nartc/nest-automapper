@@ -35,14 +35,17 @@ This module will require you to pass at least one of the properties. If you pass
 `AutomapperModule` provides an injectable-singleton of an instance of `AutoMapper` in `automapper-nartc`
 
 2. Inject `Mapper` in your `Service`:
+
 ```typescript
 export class UserService {
   constructor(@InjectMapper() private readonly _mapper: AutoMapper) {}
 }
 ```
+
 **Note**: `AutoMapper` is imported from `automapper-nartc`. `InjectMapper` decorator is imported from `nest-automapper`.
 
 3. Use `Mapper` on your domain models:
+
 ```typescript
 ...
 const result = await newUser.save();
@@ -56,6 +59,7 @@ Due to reflection capabilities that `TypeScript` has, there are some caveats/opi
 1. `automapper-nartc` only works with `Classes`. `Interfaces` won't work because `Interfaces` will lose its context after transpiled.
 2. If you use **MongoDB**, you might want (or really, need) to use `typegoose`. `Typegoose` allows you to create your domain models/schemas using `Classes` and this works well with `automapper-nartc`. If you never use `mongoose` with `typescript` before, you'd have to create your domain models as `interface` because you'd have to extend `mongoose.Document` (which is an `interface`).
 3. In your `DTOs`/`ViewModels` classes, you have to use the short-hand when you define your `fields`. This is to make sure the instance of the `DTO`/`ViewModel` being mapped will have all the properties needed, even though they are undefined, when it gets mapped.
+
 ```typescript
 // BAD
 export class UserVm {

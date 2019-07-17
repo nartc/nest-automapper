@@ -2,7 +2,7 @@ import { DynamicModule, Global, Logger, Module } from '@nestjs/common';
 import { Mapper } from 'automapper-nartc';
 import { AutomapperModuleOptions } from './interfaces';
 
-export const AUTOMAPPER = 'nestjs__AUTO_MAPPER';
+export const AUTOMAPPER = 'nestjs_AUTO_MAPPER';
 
 @Global()
 @Module({})

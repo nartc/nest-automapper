@@ -30,7 +30,8 @@ export class AutomapperModule {
 
     return {
       module: AutomapperModule,
-      providers: [{ provide: AUTOMAPPER, useValue: Mapper }]
+      providers: [{ provide: AUTOMAPPER, useValue: Mapper }],
+      exports: [{ provide: AUTOMAPPER, useValue: Mapper }]
     };
   }
 }

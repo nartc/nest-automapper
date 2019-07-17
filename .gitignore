@@ -17,8 +17,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-lib-cov
-src/coverage/
 .env
 !src/__tests__/__stubs__/.env
 

@@ -9,9 +9,8 @@ export const AUTOMAPPER = 'nestjs__AUTO_MAPPER';
 export class AutomapperModule {
   static forRoot(options: AutomapperModuleOptions): DynamicModule {
     if (!options.configFn && !options.profiles) {
-      const errorMessage = 'AutomapperModuleOptions cannot be emptied';
-      Logger.error(errorMessage);
-      throw new Error(errorMessage);
+      const message = 'AutoMapper is not initialized without options';
+      Logger.warn(message);
     }
 
     if (options.profiles && options.configFn) {

@@ -110,6 +110,6 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "automapper-nartc": "^3.0.10"
+    "automapper-nartc": "3.0.11"
   }
 }

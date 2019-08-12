@@ -76,9 +76,11 @@
   },
   "peerDependencies": {
     "@nestjs/common": "^6.5.2",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "automapper-nartc": "3.0.18"
   },
   "devDependencies": {
+    "automapper-nartc": "3.0.18",
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-conventional": "^8.1.0",
     "@nestjs/common": "^6.5.2",
@@ -108,8 +110,5 @@
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.14.2",
     "typescript": "^3.5.3"
-  },
-  "dependencies": {
-    "automapper-nartc": "3.0.18"
   }
 }

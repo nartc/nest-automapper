@@ -77,7 +77,7 @@
   "peerDependencies": {
     "@nestjs/common": "^6.5.2",
     "reflect-metadata": "^0.1.13",
-    "automapper-nartc": "3.0.18"
+    "automapper-nartc": "^3.0.18"
   },
   "devDependencies": {
     "automapper-nartc": "3.0.18",

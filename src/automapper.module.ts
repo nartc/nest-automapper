@@ -19,14 +19,9 @@ export class AutomapperModule {
    * @param {AutomapperModuleRootOptions} options
    */
   static forRoot(options: AutomapperModuleRootOptions): DynamicModule {
-    if (!options.configFn) {
-      const message = 'AutomapperModuleRootOptions.configFn is empty';
-      this.logger.error(message);
-      throw new Error(message);
-    }
-
     const mapper = new AutoMapper();
-    mapper.initialize(options.configFn);
+
+    options && options.config && mapper.initialize(options.config);
 
     return {
       module: AutomapperModule,
@@ -36,7 +31,8 @@ export class AutomapperModule {
   }
 
   /**
-   * Add to the AutoMapper instance a list of MappingProfiles. By default, the instance with name "default" will be used.
+   * Add to the AutoMapper instance a list of MappingProfiles. By default, the instance with name "default" will be
+   * used.
    *
    * @param {AutomapperModuleFeatureOptions} options
    */

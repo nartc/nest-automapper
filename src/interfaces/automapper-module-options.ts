@@ -8,9 +8,9 @@ export interface AutomapperModuleRootOptions {
   /**
    * Configuration Function to be ran when initialize a new AutoMapper instance
    *
-   * @param {Configuration} config
+   * @param {Configuration} cfg
    */
-  configFn: (config: Configuration) => void;
+  config?: (cfg: Configuration) => void;
 
   /**
    * Name of the AutoMapper instance

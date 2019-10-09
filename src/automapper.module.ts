@@ -18,15 +18,25 @@ export class AutomapperModule {
    *
    * @param {AutomapperModuleRootOptions} options
    */
-  static forRoot(options: AutomapperModuleRootOptions): DynamicModule {
+  static forRoot(options?: AutomapperModuleRootOptions): DynamicModule {
     const mapper = new AutoMapper();
 
     options && options.config && mapper.initialize(options.config);
 
     return {
       module: AutomapperModule,
-      providers: [{ provide: getMapperToken(options.name), useValue: mapper }],
-      exports: [{ provide: getMapperToken(options.name), useValue: mapper }]
+      providers: [
+        {
+          provide: getMapperToken(options ? options.name : ''),
+          useValue: mapper
+        }
+      ],
+      exports: [
+        {
+          provide: getMapperToken(options ? options.name : ''),
+          useValue: mapper
+        }
+      ]
     };
   }
 

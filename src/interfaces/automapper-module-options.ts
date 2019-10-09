@@ -1,6 +1,35 @@
-import { MappingProfileBase, Configuration } from 'automapper-nartc';
+import {
+  MappingProfileBase,
+  Configuration,
+  MappingProfile
+} from 'automapper-nartc';
 
-export interface AutomapperModuleOptions {
-  profiles?: Array<MappingProfileBase>;
-  configFn?: (config: Configuration) => void;
+export interface AutomapperModuleRootOptions {
+  /**
+   * Configuration Function to be ran when initialize a new AutoMapper instance
+   *
+   * @param {Configuration} config
+   */
+  configFn: (config: Configuration) => void;
+
+  /**
+   * Name of the AutoMapper instance
+   *
+   * @default default
+   */
+  name?: string;
+}
+
+export interface AutomapperModuleFeatureOptions {
+  /**
+   * An array of MappingProfile to be added to the AutoMapper instance
+   */
+  profiles: Array<MappingProfile>;
+
+  /**
+   * Name of the AutoMapper instance
+   *
+   * @default default
+   */
+  name?: string;
 }

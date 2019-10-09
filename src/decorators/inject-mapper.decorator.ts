@@ -1,4 +1,10 @@
 import { Inject } from '@nestjs/common';
-import { AUTOMAPPER } from '../automapper.module';
+import { getMapperToken } from '../utils/getMapperToken';
 
-export const InjectMapper = () => Inject(AUTOMAPPER);
+/**
+ * Inject the AutoMapper intsance with name.
+ *
+ * @param {string} name - Name of the AutoMapper instance
+ * @default default
+ */
+export const InjectMapper = (name?: string) => Inject(getMapperToken(name));

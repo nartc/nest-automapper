@@ -13,8 +13,8 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "rimraf ./dist && tsc && npm run build:index",
-    "build:index": "rimraf ./index.js ./index.d.ts && tsc -d --skipLibCheck ./index.ts",
+    "build": "rimraf ./dist && tsc -p tsconfig.build.json && npm run build:index",
+    "build:index": "rimraf ./index.js ./index.d.ts && tsc -p tsconfig.build.json -d --skipLibCheck ./index.ts",
     "build:doc": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest --coverage",
@@ -77,15 +77,17 @@
   "peerDependencies": {
     "@nestjs/common": "^6.5.2",
     "reflect-metadata": "^0.1.13",
-    "automapper-nartc": "^3.1.0"
+    "automapper-nartc": "^3.1.2"
   },
   "devDependencies": {
-    "automapper-nartc": "3.1.0",
     "@commitlint/cli": "8.2.0",
     "@commitlint/config-conventional": "8.2.0",
     "@nestjs/common": "6.8.2",
+    "@nestjs/core": "^6.8.2",
+    "@nestjs/testing": "6.8.2",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.12",
+    "automapper-nartc": "3.1.2",
     "colors": "1.4.0",
     "commitizen": "4.0.3",
     "coveralls": "3.0.6",

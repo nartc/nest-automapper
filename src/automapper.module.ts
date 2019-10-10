@@ -4,6 +4,7 @@ import {
   AutomapperModuleFeatureOptions,
   AutomapperModuleRootOptions
 } from './interfaces';
+import { MAPPER_MAP, MapperMap } from './maps/mappers.map';
 import { getMapperToken } from './utils/getMapperToken';
 
 @Global()
@@ -23,20 +24,24 @@ export class AutomapperModule {
 
     options && options.config && mapper.initialize(options.config);
 
+    const token = getMapperToken(options ? options.name : '');
+    !MapperMap.has(token) && MapperMap.set(token, mapper);
+
+    const providers = [
+      {
+        provide: getMapperToken(options ? options.name : ''),
+        useValue: mapper
+      },
+      {
+        provide: MAPPER_MAP,
+        useValue: MapperMap
+      }
+    ];
+
     return {
       module: AutomapperModule,
-      providers: [
-        {
-          provide: getMapperToken(options ? options.name : ''),
-          useValue: mapper
-        }
-      ],
-      exports: [
-        {
-          provide: getMapperToken(options ? options.name : ''),
-          useValue: mapper
-        }
-      ]
+      providers,
+      exports: providers
     };
   }
 
@@ -53,22 +58,36 @@ export class AutomapperModule {
       throw new Error(message);
     }
 
+    const token = getMapperToken(options ? options.name : '');
+
     const providers = [
       {
-        provide: getMapperToken(options.name),
-        useFactory: (mapper: AutoMapper) => {
+        provide: token,
+        useFactory: (mapperMap: Map<string, AutoMapper>) => {
+          if (!mapperMap.size) {
+            const message =
+              'AutomapperModule has not been initialized with forRoot';
+            this.logger.error(message);
+            throw new Error(message);
+          }
+
+          const mapper = mapperMap.has(token)
+            ? mapperMap.get(token)
+            : mapperMap.get(getMapperToken());
+
           options.profiles.forEach(pf => {
             mapper.addProfile(pf);
           });
           return mapper;
         },
-        inject: [getMapperToken(options.name)]
+        inject: [MAPPER_MAP]
       }
     ];
 
     return {
       module: AutomapperModule,
-      providers: providers,
+      imports: [AutomapperModule],
+      providers,
       exports: providers
     };
   }

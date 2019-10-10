@@ -14,7 +14,7 @@
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "rimraf ./dist && tsc -p tsconfig.build.json && npm run build:index",
-    "build:index": "rimraf ./index.js ./index.d.ts && tsc -p tsconfig.build.json -d --skipLibCheck ./index.ts",
+    "build:index": "rimraf ./index.js ./index.d.ts && tsc -d --skipLibCheck ./index.ts",
     "build:doc": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest --coverage",

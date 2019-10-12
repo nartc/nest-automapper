@@ -7,6 +7,7 @@
 This module is a wrapper around `automapper-nartc` so all usage documentations should be referenced at the link below. 
 
 Github Pages [https://nartc.github.io/automapper-nartc/](https://nartc.github.io/automapper-nartc/)
+Github Repo [https://github.com/nartc/automapper-nartc](https://github.com/nartc/automapper-nartc)
 
 ## Setup
 ```
@@ -17,24 +18,39 @@ npm i -s nest-automapper
 
 **Note 2**: Please make sure that you've read `automapper-nartc` documentations to familiarize yourself with `AutoMapper`'s terminology and how to setup your `Profile` and such.
 
-1. Import `AutomapperModule` in `AppModule`
+1. Import `AutomapperModule` in `AppModule` and call `.forRoot()` method.
 
 ```typescript
 @Module({
-  imports: [AutomapperModule.forRoot({profiles: [new UserProfile()]})]
+  imports: [AutomapperModule.forRoot()]
 })
 export class AppModule {}
 ```
  
-`AutomapperModule.forRoot()` method expects an `AutomapperModuleOptions`. There are two properties on the options that you can pass in:
-- `profiles`: An array of `MappingProfileBase`.
-- `configFn`: A configuration function that will get called automatically.
+`AutomapperModule.forRoot()` method expects an `AutomapperModuleRootOptions`. When you call `AutomapperModule.forRoot()`, a new instance of `AutoMapper` will be created with the `name` option. There are two properties on the options that you can pass in:
+- `name`: Name of this `AutoMapper` instance. Default to `"default"`.
+- `config`: A configuration function that will get called automatically.
 
-This module will require you to pass at least one of the properties. If you pass both properties, `configFn` will take precedence over `profiles`.
+Both options are optional. If you pass in `config` and configure your `AutoMapper` there, that is totally fine, but the following approach is recommended. Refer to [automapper-nartc: usage](https://github.com/nartc/automapper-nartc#usage) 
 
-`AutomapperModule` provides an injectable-singleton of an instance of `AutoMapper` in `automapper-nartc`
+2. `AutoMapper` has a concept of `Profile`. A `Profile` is a class that will house some specific mappings related to a specific domain model. Eg: `User` mappings will be housed by `UserProfile`. Refer to [automapper-nartc: usage](https://github.com/nartc/automapper-nartc#usage) for more information regarding `Profile`.
 
-2. Inject `Mapper` in your `Service`:
+`NestJS` recommends you to separate features/domains in your application into `Modules`, in each module you would import/declare other modules/parts that are related to that Module. `AutomapperModule` also has a static method `forFeature` which should be used in such a feature module. `forFeature` accepts an `AutomapperModuleFeatureOptions` which has:
+- `profiles`: An array of `Profiles` related to this module, and this will be added to an `AutoMapper` instance.
+- `name`: Decide which `AutoMapper` instance to add these profiles to. Default to `"default"`
+
+```typescript 
+@Module({
+  imports: [AutomapperModule.forFeature({profiles: [new UserProfile()]})]
+})
+export class UserModule {}
+```
+
+#### Exceptions:
+- `AutomapperModule` will throw an `Exception` if `forFeature` receives an empty option
+- `AutomapperModule` will throw an `Exception` if `forFeature` is called before any `forRoot()` calls.
+
+3. Inject an instance of `AutoMapper` in your `Service`:
 
 ```typescript
 export class UserService {
@@ -44,7 +60,9 @@ export class UserService {
 
 **Note**: `AutoMapper` is imported from `automapper-nartc`. `InjectMapper` decorator is imported from `nest-automapper`.
 
-3. Use `Mapper` on your domain models:
+`InjectMapper()` accepts an optional argument `name` which will tell the decorator to inject the right instance of `AutoMapper`. Default to `"default"`.
+
+3. Use `AutoMapper` on your domain models:
 
 ```typescript
 ...
@@ -57,25 +75,5 @@ return this._mapper.map(result.toJSON(), UserVm);
 
 Due to reflection capabilities that `TypeScript` has, there are some caveats/opinionated problems about using this wrapper (ultimately, `automapper-nartc`).
 1. `automapper-nartc` only works with `Classes`. `Interfaces` won't work because `Interfaces` will lose its context after transpiled.
-2. If you use **MongoDB**, you might want (or really, need) to use `typegoose`. `Typegoose` allows you to create your domain models/schemas using `Classes` and this works well with `automapper-nartc`. If you never use `mongoose` with `typescript` before, you'd have to create your domain models as `interface` because you'd have to extend `mongoose.Document` (which is an `interface`).
-3. In your `DTOs`/`ViewModels` classes, you have to use the short-hand when you define your `fields`. This is to make sure the instance of the `DTO`/`ViewModel` being mapped will have all the properties needed, even though they are undefined, when it gets mapped.
-
-```typescript
-// BAD
-export class UserVm {
-  firstName: string;
-  lastName: string;
-  fullName: string;
-}
-
-// GOOD
-export class UserVm {
-  constructor(
-    public firstName: string,
-    public lastName: string,
-    public fullName: string
-  ) {
-    // if you have nested object or nested array, you might want to initialize them here.
-  }
-}
+2. Please follow `automapper-nartc` example to understand how to setup your models.
 ```

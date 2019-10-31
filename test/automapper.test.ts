@@ -1,6 +1,6 @@
+import { AutoMapper, MappingProfileBase } from '@nartc/automapper';
 import { Module } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AutoMapper, MappingProfileBase } from 'automapper-nartc';
 import { Expose } from 'class-transformer';
 import { AutomapperModule } from '../src';
 import { MAPPER_MAP } from '../src/maps/mappers.map';
@@ -24,7 +24,8 @@ class MockProfile extends MappingProfileBase {
   configure(mapper: AutoMapper): void {
     mapper
       .createMap(Mock, MockVm)
-      .forMember('bar', opts => opts.mapFrom(s => s.foo));
+      .forMember(d => d.bar, opts => opts.mapFrom(s => s.foo))
+      .reverseMap();
   }
 }
 
@@ -69,5 +70,15 @@ describe('AutoMapper test', () => {
     expect(vm).toBeTruthy();
     expect(vm.bar).toEqual(_mock.foo);
     expect(vm).toBeInstanceOf(MockVm);
+  });
+
+  it('AutomapperModule - reverseMap', () => {
+    const _mockVm = new MockVm();
+    _mockVm.bar = 'should be foo';
+
+    const _mock = mapper.map(_mockVm, Mock);
+    expect(_mock).toBeTruthy();
+    expect(_mock).toBeInstanceOf(Mock);
+    expect(_mock.foo).toEqual(_mockVm.bar);
   });
 });

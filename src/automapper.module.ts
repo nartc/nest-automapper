@@ -1,5 +1,5 @@
+import { AutoMapper } from '@nartc/automapper';
 import { DynamicModule, Global, Logger, Module } from '@nestjs/common';
-import { AutoMapper } from 'automapper-nartc';
 import {
   AutomapperModuleFeatureOptions,
   AutomapperModuleRootOptions

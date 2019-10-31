@@ -29,7 +29,7 @@ export class AutomapperModule {
 
     const providers = [
       {
-        provide: getMapperToken(options ? options.name : ''),
+        provide: token,
         useValue: mapper
       },
       {
@@ -71,13 +71,9 @@ export class AutomapperModule {
             throw new Error(message);
           }
 
-          const mapper = mapperMap.has(token)
-            ? mapperMap.get(token)
-            : mapperMap.get(getMapperToken());
+          const mapper = mapperMap.get(token);
 
-          options.profiles.forEach(pf => {
-            mapper.addProfile(pf);
-          });
+          options.profiles.forEach(mapper.addProfile.bind(mapper));
           return mapper;
         },
         inject: [MAPPER_MAP]

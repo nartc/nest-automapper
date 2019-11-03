@@ -30,7 +30,7 @@ export class AutomapperModule {
     const providers = [
       {
         provide: token,
-        useValue: mapper
+        useValue: MapperMap.get(token)
       },
       {
         provide: MAPPER_MAP,

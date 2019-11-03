@@ -1,4 +1,4 @@
-import { AutoMapper, MappingProfileBase } from '@nartc/automapper';
+import { AutoMapper, ExposedType, MappingProfileBase } from '@nartc/automapper';
 import { Module } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Expose } from 'class-transformer';
@@ -6,14 +6,28 @@ import { AutomapperModule } from '../src';
 import { MAPPER_MAP } from '../src/maps/mappers.map';
 import { getMapperToken } from '../src/utils/getMapperToken';
 
+class Nested {
+  @Expose()
+  foo: string;
+}
+
+class NestedVm {
+  @Expose()
+  foo: string;
+}
+
 class Mock {
   @Expose()
   foo: string;
+  @ExposedType(() => Nested)
+  nested: Nested;
 }
 
 class MockVm {
   @Expose()
   bar: string;
+  @ExposedType(() => NestedVm)
+  nested: NestedVm;
 }
 
 class MockProfile extends MappingProfileBase {
@@ -29,6 +43,16 @@ class MockProfile extends MappingProfileBase {
   }
 }
 
+class NestedProfile extends MappingProfileBase {
+  constructor() {
+    super();
+  }
+
+  configure(mapper: AutoMapper): void {
+    mapper.createMap(Nested, NestedVm);
+  }
+}
+
 @Module({
   imports: [AutomapperModule.forRoot()]
 })
@@ -39,6 +63,11 @@ class MockModule {}
 })
 class MockSubModule {}
 
+@Module({
+  imports: [AutomapperModule.forFeature({ profiles: [new NestedProfile()] })]
+})
+class NestedSubModule {}
+
 describe('AutoMapper test', () => {
   let moduleFixture: TestingModule;
   let mapper: AutoMapper;
@@ -46,7 +75,7 @@ describe('AutoMapper test', () => {
 
   beforeAll(async () => {
     moduleFixture = await Test.createTestingModule({
-      imports: [MockModule, MockSubModule]
+      imports: [MockModule, NestedSubModule, MockSubModule]
     }).compile();
     mapperMap = moduleFixture.get<Map<string, AutoMapper>>(MAPPER_MAP);
     mapper = moduleFixture.get<AutoMapper>(getMapperToken());

@@ -58,33 +58,19 @@ export class AutomapperModule {
       throw new Error(message);
     }
 
+    if (!MapperMap.size) {
+      const message = 'AutomapperModule has not been initialized with forRoot';
+      this.logger.error(message);
+      throw new Error(message);
+    }
+
     const token = getMapperToken(options ? options.name : '');
+    const mapper = MapperMap.get(token);
 
-    const providers = [
-      {
-        provide: token,
-        useFactory: (mapperMap: Map<string, AutoMapper>) => {
-          if (!mapperMap.size) {
-            const message =
-              'AutomapperModule has not been initialized with forRoot';
-            this.logger.error(message);
-            throw new Error(message);
-          }
-
-          const mapper = mapperMap.get(token);
-
-          options.profiles.forEach(mapper.addProfile.bind(mapper));
-          return mapper;
-        },
-        inject: [MAPPER_MAP]
-      }
-    ];
+    options.profiles.forEach(mapper.addProfile.bind(mapper));
 
     return {
-      module: AutomapperModule,
-      imports: [AutomapperModule],
-      providers,
-      exports: providers
+      module: AutomapperModule
     };
   }
 }

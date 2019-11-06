@@ -1,3 +1,7 @@
+# Deprecation Warning
+#### This package has been moved to [https://github.com/nestjsx/automapper](https://github.com/nestjsx/automapper). Please use `nestjsx-automapper` instead of this package as it will not be maintained. 
+
+
 <p align="center"><img src="https://avatars1.githubusercontent.com/u/41109786?s=200&v=4"/></p>
 <h1 align="center">Nest Automapper</h1>
 <p align="center">A wrapper around <a href="https://github.com/nartc/automapper-nartc">automapper-nartc</a> to be used with <strong>NestJS</strong> as a <code>Module</code>.</p>
